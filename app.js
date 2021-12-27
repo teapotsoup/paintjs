@@ -4,6 +4,7 @@ const colors = document.getElementsByClassName("jsColor");
 const range = document.querySelector("#jsRange");
 const canvasFillBtn = document.querySelector("#jsMode");
 const canvasCleanBtn = document.querySelector("#jsClean");
+const canvasSaveBtn = document.querySelector("#jsSave");
 
 const initialColor = "#2c2c2c";
 
@@ -11,6 +12,8 @@ canvas.width = document.getElementsByClassName("canvas")[0].offsetWidth;
 canvas.height = document.getElementsByClassName("canvas")[0].offsetHeight;
 
 
+ctx.fillStyle = "white";
+ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 ctx.strokeStyle = initialColor; //컨트롤하는 픽셀들이 해당 컬러를 가진다
 ctx.fillStyle = initialColor;
@@ -50,6 +53,18 @@ function handleCanvasClick() {
 
 }
 
+function handleCM(e) {
+    e.preventDefault();
+}
+
+function handleSaveClick() {
+    const image = canvas.toDataURL();
+    //default가 png 인자로 입력시 image/jpeg 등 설정가능
+    const link = document.createElement("a");
+    link.href = image;
+    link.download = "PaintJs";
+    link.click();
+}
 
 if (canvas) {
     canvas.addEventListener('mousemove', onMouseMove);
@@ -57,6 +72,7 @@ if (canvas) {
     canvas.addEventListener('mouseup', stopPainting);
     canvas.addEventListener('mouseleave', stopPainting);
     canvas.addEventListener('click', handleCanvasClick);
+    canvas.addEventListener('contextmenu', handleCM);
 }
 
 
@@ -94,3 +110,7 @@ if (range) {
         ctx.lineWidth = e.target.value;
     });
 };
+
+if (canvasSaveBtn) {
+    canvasSaveBtn.addEventListener("click", handleSaveClick);
+}
